@@ -2,19 +2,49 @@
 <html>
   <head>
       <meta charset="utf-8">
-      <title>Opening in Obsidian...</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Open in Obsidian</title>
+    <style>
+          body { font-family: -apple-system, system-ui, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #1e1e2e; color: #cdd6f4; }
+          .container { text-align: center; padding: 2rem; }
+          a.btn { display: inline-block; padding: 16px 32px; background: #89b4fa; color: #1e1e2e; text-decoration: none; border-radius: 12px; font-size: 18px; font-weight: 600; margin-top: 1rem; }
+          a.btn:active { background: #74c7ec; }
+          .note-name { color: #a6adc8; margin-top: 0.5rem; font-size: 14px; word-break: break-all; }
+          .hint { color: #6c7086; font-size: 13px; margin-top: 1.5rem; }
+        </style>
   </head>
-<body>
-    <p>Opening note in Obsidian...</p>
-  <script>
-        const params = new URLSearchParams(window.location.search);
-        const note = params.get('note');
-        const vault = params.get('vault') || 'Dinx';
-        if (note) {
-                window.location.href = 'obsidian://open?vault=' + encodeURIComponent(vault) + '&file=' + encodeURIComponent(note);
-        } else {
-                document.body.innerHTML = '<p>No note specified. Use ?note=path/to/note</p>';
-        }
-  </script>
-</body>
+  <body>
+      <div class="container" id="main">
+            <p>Loading...</p>
+      </div>div>
+    <script>
+          const params = new URLSearchParams(window.location.search);
+          const note = params.get('note');
+          const vault = params.get('vault') || 'Dinx';
+          const container = document.getElementById('main');
+
+          if (note) {
+                  const obsUrl = 'obsidian://open?vault=' + encodeURIComponent(vault) + '&file=' + encodeURIComponent(note);
+
+                  // Try auto-redirect first
+                  window.location.href = obsUrl;
+
+                  // Show tap button as fallback (Telegram in-app browser blocks auto-redirect)
+                  setTimeout(function() {
+                            container.innerHTML =
+                                        '<h2>📝</h2>' +
+                                        '<a class="btn" href="' + obsUrl + '">Open in Obsidian</a>' +
+                                        '<p class="note-name">' + note + '</p>' +
+                                        '<p class="hint">If nothing happened, tap the button above.<br>On Telegram: tap ⋮ → Open in Safari</p>';
+                  }, 300);
+          } else {
+                  container.innerHTML = '<p>No note specified.</p><p class="note-name">Use ?note=path/to/note</p>';
+          }
+    </script>
+  </body>
+</html>
+    </script></p>
+  </body>
+    </style></title>
+  </head>
 </html>
